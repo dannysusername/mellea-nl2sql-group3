@@ -1,0 +1,10 @@
+# Python
+.venv/
+__pycache__/
+
+# Database (rebuild with: python scripts/setup_db.py)
+data/
+
+# Private class files (classmates' names). Never commit.
+CIS 3590 Group Projects*
+CIS 3590 Mellea Issues*

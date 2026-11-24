@@ -1,0 +1,258 @@
+[
+  {
+    "id": "q001",
+    "question": "How many movies are in the database?",
+    "sql": "SELECT COUNT(*) FROM movies;",
+    "runs": true,
+    "error": null,
+    "seconds": 12.4
+  },
+  {
+    "id": "q002",
+    "question": "How many ratings has user 42 submitted?",
+    "sql": "SELECT COUNT(*) \nFROM ratings \nWHERE userId = 42;",
+    "runs": true,
+    "error": null,
+    "seconds": 2.1
+  },
+  {
+    "id": "q003",
+    "question": "What is the title of the movie with movieId 318?",
+    "sql": "SELECT title FROM movies WHERE movieId = 318;",
+    "runs": true,
+    "error": null,
+    "seconds": 2.0
+  },
+  {
+    "id": "q004",
+    "question": "List all distinct genre strings that appear in the movies table.",
+    "sql": "SELECT DISTINCT genres FROM movies;",
+    "runs": true,
+    "error": null,
+    "seconds": 1.4
+  },
+  {
+    "id": "q005",
+    "question": "How many users have rated at least one movie?",
+    "sql": "SELECT COUNT(DISTINCT userId) \nFROM ratings;",
+    "runs": true,
+    "error": null,
+    "seconds": 2.1
+  },
+  {
+    "id": "q006",
+    "question": "What is the highest rating value that appears in the ratings table?",
+    "sql": "SELECT MAX(rating) FROM ratings;",
+    "runs": true,
+    "error": null,
+    "seconds": 1.6
+  },
+  {
+    "id": "q007",
+    "question": "How many movies have the exact genre string 'Comedy'?",
+    "sql": "SELECT COUNT(*) \nFROM movies \nWHERE genres = 'Comedy';",
+    "runs": true,
+    "error": null,
+    "seconds": 2.3
+  },
+  {
+    "id": "q008",
+    "question": "How many ratings are exactly 5.0?",
+    "sql": "SELECT COUNT(*) \nFROM ratings \nWHERE rating = 5.0;",
+    "runs": true,
+    "error": null,
+    "seconds": 2.5
+  },
+  {
+    "id": "q009",
+    "question": "What is the tmdbId of the movie with movieId 1?",
+    "sql": "SELECT tmdbId\nFROM links\nWHERE movieId = 1;",
+    "runs": true,
+    "error": null,
+    "seconds": 2.4
+  },
+  {
+    "id": "q010",
+    "question": "How many distinct tags appear in the tags table?",
+    "sql": "SELECT COUNT(DISTINCT tag) FROM tags;",
+    "runs": true,
+    "error": null,
+    "seconds": 1.7
+  },
+  {
+    "id": "q011",
+    "question": "What is the average rating of 'Toy Story (1995)'?",
+    "sql": "SELECT AVG(rating) \nFROM ratings \nWHERE movieId = (SELECT movieId FROM movies WHERE title = 'Toy Story (1995)');",
+    "runs": true,
+    "error": null,
+    "seconds": 4.3
+  },
+  {
+    "id": "q012",
+    "question": "List the top 10 movies by number of ratings, from most to least.",
+    "sql": "SELECT m.title\nFROM movies m\nJOIN ratings r ON m.movieId = r.movieId\nGROUP BY m.movieId, m.title\nORDER BY COUNT(r.ratingId) DESC\nLIMIT 10;",
+    "runs": true,
+    "error": null,
+    "seconds": 6.8
+  },
+  {
+    "id": "q013",
+    "question": "What is the average rating for each genre string?",
+    "sql": "SELECT m.genres,\n       AVG(r.rating) AS average_rating\nFROM movies m\nJOIN ratings r ON m.movieId = r.movieId\nGROUP BY m.genres;",
+    "runs": true,
+    "error": null,
+    "seconds": 4.9
+  },
+  {
+    "id": "q014",
+    "question": "How many movies have at least 100 ratings?",
+    "sql": "SELECT COUNT(*) \nFROM movies \nWHERE movieId IN (\n    SELECT movieId \n    FROM ratings \n    GROUP BY movieId \n    HAVING COUNT(*) >= 100\n);",
+    "runs": true,
+    "error": null,
+    "seconds": 5.8
+  },
+  {
+    "id": "q015",
+    "question": "Find the 5 movies with the highest average rating among movies that have at least 1000 ratings.",
+    "sql": "SELECT m.title\nFROM movies m\nJOIN ratings r ON m.movieId = r.movieId\nGROUP BY m.movieId, m.title\nHAVING COUNT(*) >= 1000\nORDER BY AVG(r.rating) DESC\nLIMIT 5;",
+    "runs": true,
+    "error": null,
+    "seconds": 6.8
+  },
+  {
+    "id": "q016",
+    "question": "How many movies were released in 1995, according to the year in parentheses in the title?",
+    "sql": "SELECT COUNT(*) \nFROM movies \nWHERE title LIKE '%1995%';",
+    "runs": true,
+    "error": null,
+    "seconds": 2.6
+  },
+  {
+    "id": "q017",
+    "question": "What are the 3 most common tags applied to the movie 'The Matrix (1999)'?",
+    "sql": "SELECT tag\nFROM tags\nWHERE movieId = (\n    SELECT movieId\n    FROM movies\n    WHERE title = 'The Matrix (1999)'\n)\nGROUP BY tag\nORDER BY COUNT(*) DESC\nLIMIT 3;",
+    "runs": true,
+    "error": null,
+    "seconds": 6.4
+  },
+  {
+    "id": "q018",
+    "question": "How many distinct movies has user 123 tagged?",
+    "sql": "SELECT COUNT(DISTINCT movieId)\nFROM tags\nWHERE userId = 123;",
+    "runs": true,
+    "error": null,
+    "seconds": 2.5
+  },
+  {
+    "id": "q019",
+    "question": "How many movies include 'Horror' as one of their genres?",
+    "sql": "SELECT COUNT(DISTINCT movieId)\nFROM movies\nWHERE genres LIKE '%Horror%';",
+    "runs": true,
+    "error": null,
+    "seconds": 2.7
+  },
+  {
+    "id": "q020",
+    "question": "What is the highest-rated movie whose genres include both 'Action' and 'Comedy', with at least 500 ratings?",
+    "sql": "SELECT m.title\nFROM movies m\nJOIN ratings r ON m.movieId = r.movieId\nWHERE m.genres LIKE '%Action%'\n  AND m.genres LIKE '%Comedy%'\nGROUP BY m.movieId, m.title\nHAVING COUNT(r.ratingId) >= 500\nORDER BY AVG(r.rating) DESC\nLIMIT 1;",
+    "runs": true,
+    "error": null,
+    "seconds": 9.6
+  },
+  {
+    "id": "q021",
+    "question": "Count movies tagged as having no genres listed.",
+    "sql": "SELECT COUNT(*)\nFROM movies\nWHERE genres = '';",
+    "runs": true,
+    "error": null,
+    "seconds": 1.8
+  },
+  {
+    "id": "q022",
+    "question": "How many ratings were submitted in 2015?",
+    "sql": "SELECT COUNT(*) \nFROM ratings \nWHERE strftime('%Y', timestamp) = '2015';",
+    "runs": true,
+    "error": null,
+    "seconds": 2.7
+  },
+  {
+    "id": "q023",
+    "question": "What was the earliest rating in the dataset, and what movie was it for?",
+    "sql": "SELECT movies.title, ratings.rating\nFROM ratings\nORDER BY ratings.timestamp ASC\nLIMIT 1;",
+    "runs": false,
+    "error": "no such column: movies.title",
+    "seconds": 3.0
+  },
+  {
+    "id": "q024",
+    "question": "How many ratings per year were submitted, from 2000 through 2010?",
+    "sql": "SELECT strftime('%Y', timestamp) AS year,\n       COUNT(*) AS rating_count\nFROM ratings\nWHERE timestamp BETWEEN 946684800 AND 1262102400\nGROUP BY year\nORDER BY year;",
+    "runs": true,
+    "error": null,
+    "seconds": 5.5
+  },
+  {
+    "id": "q025",
+    "question": "Which movie or movies have the highest average rating among all movies with exactly 1 rating?",
+    "sql": "SELECT title\nFROM movies\nWHERE movieId IN (\n    SELECT movieId\n    FROM ratings\n    GROUP BY movieId\n    HAVING COUNT(*) = 1\n    ORDER BY AVG(rating) DESC\n    LIMIT 1\n);",
+    "runs": true,
+    "error": null,
+    "seconds": 6.5
+  },
+  {
+    "id": "q026",
+    "question": "List all movies that have no tags in the tags table.",
+    "sql": "SELECT title\nFROM movies\nWHERE movieId NOT IN (SELECT movieId FROM tags);",
+    "runs": true,
+    "error": null,
+    "seconds": 2.6
+  },
+  {
+    "id": "q027",
+    "question": "Find the user who gave the most 5.0 ratings. If there's a tie, return all tied users.",
+    "sql": "SELECT userId\nFROM ratings\nWHERE rating = 5.0\nGROUP BY userId\nHAVING COUNT(*) = (\n    SELECT MAX(cnt)\n    FROM (\n        SELECT COUNT(*) AS cnt\n        FROM ratings\n        WHERE rating = 5.0\n        GROUP BY userId\n    )\n);",
+    "runs": true,
+    "error": null,
+    "seconds": 8.7
+  },
+  {
+    "id": "q028",
+    "question": "For each movie that has at least 50 ratings, what percentage of its ratings are 5.0? List the top 5.",
+    "sql": "SELECT \n    m.title,\n    ROUND(100.0 * SUM(r.rating = 5.0) / COUNT(*), 2) AS percentage_5\nFROM \n    movies m\nJOIN \n    ratings r ON m.movieId = r.movieId\nGROUP BY \n    m.movieId, m.title\nHAVING \n    COUNT(*) >= 50\nORDER BY \n    percentage_5 DESC\nLIMIT 5;",
+    "runs": true,
+    "error": null,
+    "seconds": 12.3
+  },
+  {
+    "id": "q029",
+    "question": "Which users have rated every movie in the Toy Story series (Toy Story, Toy Story 2, Toy Story 3, Toy Story 4)?",
+    "sql": "SELECT userId\nFROM ratings\nWHERE movieId IN (\n    SELECT movieId\n    FROM movies\n    WHERE title IN ('Toy Story', 'Toy Story 2', 'Toy Story 3', 'Toy Story 4')\n)\nGROUP BY userId\nHAVING COUNT(DISTINCT movieId) = 4;",
+    "runs": true,
+    "error": null,
+    "seconds": 9.0
+  },
+  {
+    "id": "q030",
+    "question": "What is the age of user 42?",
+    "sql": "SELECT (strftime('%Y', 'now') - strftime('%Y', user_create_time)) AS age\nFROM users\nWHERE userId = 42;",
+    "runs": false,
+    "error": "no such table: users",
+    "seconds": 4.1
+  },
+  {
+    "id": "q031",
+    "question": "Which director has the most movies in the database?",
+    "sql": "SELECT director\nFROM movies\nGROUP BY director\nORDER BY COUNT(*) DESC\nLIMIT 1;",
+    "runs": false,
+    "error": "no such column: director",
+    "seconds": 3.1
+  },
+  {
+    "id": "q032",
+    "question": "What is the box office revenue of the highest-grossing Comedy?",
+    "sql": "SELECT l.box_office_revenue\nFROM movies m\nJOIN links l ON m.movieId = l.movieId\nWHERE m.genres LIKE '%Comedy%' \nORDER BY l.box_office_revenue DESC\nLIMIT 1;",
+    "runs": false,
+    "error": "no such column: l.box_office_revenue",
+    "seconds": 5.9
+  }
+]
